@@ -18,6 +18,16 @@ for cmd in git claude; do
   command -v "$cmd" >/dev/null 2>&1 || fail "missing required command: $cmd"
 done
 
+if ! command -v node >/dev/null 2>&1; then
+  fail "Node.js 18.18+ is required by the Codex Claude Code plugin. On macOS: brew install node"
+fi
+
+NODE_VERSION="$(node -p 'process.versions.node')"
+NODE_OK="$(node -e 'const [a,b]=process.versions.node.split(".").map(Number); process.stdout.write(a > 18 || (a === 18 && b >= 18) ? "yes" : "no")')"
+if [ "$NODE_OK" != "yes" ]; then
+  fail "Node.js 18.18+ is required; found $NODE_VERSION. On macOS: brew upgrade node"
+fi
+
 sync_repo() {
   local url="$1"
   local dir="$2"
