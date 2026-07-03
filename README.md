@@ -14,6 +14,8 @@ The experiment is session-scoped. `opus-flow` loads the workflow; plain `claude`
 
 ## Install on macOS
 
+Prerequisites: Claude Code, Git, and Node.js 18.18+. The installer will install the Codex CLI with npm if it is missing.
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/pikalover6/opus-flow/main/install.sh | bash
 exec zsh
