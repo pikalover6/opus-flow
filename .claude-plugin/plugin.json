@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "opus-flow",
+  "displayName": "Opus Flow",
+  "version": "0.1.0",
+  "description": "An isolated Opus-led Claude Code workflow with Sonnet builders, Haiku scouts, selective GPT consultation, Codex review, and image generation.",
+  "author": {
+    "name": "pikalover6",
+    "url": "https://github.com/pikalover6"
+  },
+  "repository": "https://github.com/pikalover6/opus-flow",
+  "keywords": ["claude-code", "agents", "orchestration", "codex", "workflow"]
+}
