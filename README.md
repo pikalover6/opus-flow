@@ -31,6 +31,44 @@ The installer:
 
 It does **not** copy agents, skills, rules, or settings into `~/.claude`.
 
+## Install on Windows
+
+Prerequisites: Claude Code, Git, Node.js 18.18+, and npm.
+
+Open PowerShell and run:
+
+```powershell
+New-Item -ItemType Directory -Force "$HOME\.local\share", "$HOME\.local\bin", "$HOME\.local\share\opus-flow-deps" | Out-Null
+
+git clone https://github.com/pikalover6/opus-flow.git "$HOME\.local\share\opus-flow"
+git clone https://github.com/openai/codex-plugin-cc.git "$HOME\.local\share\opus-flow-deps\codex-plugin-cc"
+
+if (-not (Get-Command codex -ErrorAction SilentlyContinue)) {
+  npm install -g @openai/codex
+}
+
+Copy-Item "$HOME\.local\share\opus-flow\bin\opus-flow.cmd" "$HOME\.local\bin\opus-flow.cmd" -Force
+```
+
+Add `~\.local\bin` to your user PATH if it is not already there:
+
+```powershell
+$bin = "$HOME\.local\bin"
+$userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+if (($userPath -split ';') -notcontains $bin) {
+  [Environment]::SetEnvironmentVariable("Path", "$userPath;$bin", "User")
+}
+$env:Path += ";$bin"
+```
+
+Then run:
+
+```powershell
+opus-flow
+```
+
+Like the macOS setup, this does **not** copy agents, skills, rules, or settings into `~/.claude`.
+
 ## First run
 
 From any project:
@@ -112,6 +150,8 @@ No Opus Flow agents or workflow settings are loaded by that command.
 
 ## Update
 
+### macOS
+
 Run the install command again:
 
 ```bash
@@ -120,12 +160,30 @@ curl -fsSL https://raw.githubusercontent.com/pikalover6/opus-flow/main/install.s
 
 It fast-forwards both local checkouts and refreshes the launcher.
 
+### Windows
+
+```powershell
+git -C "$HOME\.local\share\opus-flow" pull --ff-only
+git -C "$HOME\.local\share\opus-flow-deps\codex-plugin-cc" pull --ff-only
+Copy-Item "$HOME\.local\share\opus-flow\bin\opus-flow.cmd" "$HOME\.local\bin\opus-flow.cmd" -Force
+```
+
 ## Uninstall
+
+### macOS
 
 ```bash
 rm -rf ~/.local/share/opus-flow \
        ~/.local/share/opus-flow-deps/codex-plugin-cc \
        ~/.local/bin/opus-flow
+```
+
+### Windows
+
+```powershell
+Remove-Item "$HOME\.local\bin\opus-flow.cmd" -Force -ErrorAction SilentlyContinue
+Remove-Item "$HOME\.local\share\opus-flow" -Recurse -Force
+Remove-Item "$HOME\.local\share\opus-flow-deps\codex-plugin-cc" -Recurse -Force
 ```
 
 This does not uninstall Claude Code or the Codex CLI.
